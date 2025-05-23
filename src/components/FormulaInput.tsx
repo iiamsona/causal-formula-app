@@ -1,50 +1,110 @@
 import { useFormulaStore } from "../store/useFormulaStore";
 import { useAutocomplete } from "../hooks/useAutocomplete";
-import { useRef, useState } from "react";
-import { Tag } from "../components/Tag.tsx";
+import { useRef, useState, useEffect } from "react";
+import { Tag } from "./Tag";
 import { LuSquareFunction } from "react-icons/lu";
 
 type SuggestionItem = {
   id: string;
   name: string;
-  category: string;
+  category?: string;
+  value: string | number;
 };
 
 type TagItem = {
   id: string;
   label: string;
+  value: string | number;
 };
 
-// Type guard to check if item is SuggestionItem (has category)
 function isSuggestionItem(item: any): item is SuggestionItem {
-  return typeof item.category === "string";
+  return typeof item.category === "string" || item.value !== undefined;
 }
 
+const OPERATORS = new Set(["+", "-", "*", "/", "^", "(", ")"]);
+
+const safeEval = (expr: string) => {
+  try {
+    return Function(`"use strict";return (${expr})`)();
+  } catch {
+    return "Error";
+  }
+};
+
 export const FormulaInput = () => {
-  const {
-    tags,
-    input,
-    setInput,
-    addTag,
-    removeLastTag,
-    removeTag,
-  } = useFormulaStore();
+  const { tags, input, setInput, addTag, removeLastTag, removeTag } =
+    useFormulaStore();
 
   const { data: suggestions = [] } = useAutocomplete(input);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const [isFocused, setIsFocused] = useState(false);
+  const [result, setResult] = useState<string | number>("");
+
+  const buildExpression = () => {
+    console.log(tags)
+    let expr = "";
+    tags.forEach((tag) => {
+      expr += tag.value !== "" && tag.value !== undefined ? tag.value : "0";
+    });
+    expr += input;
+    return expr;
+  };
+
+  useEffect(() => {
+    console.log(tags)
+    const expr = tags
+      .map((tag) => (tag.value !== "" && tag.value !== undefined ? tag.value : 0))
+      .join("") + input;
+    if (expr.trim() === "") {
+      setResult("");
+      return;
+    }
+    const safeExpr = expr
+      .toString()
+      .replace(/[^-()\d/*+.^\s]/g, "");
+
+    const val = safeEval(safeExpr);
+    setResult(val);
+  }, [tags, input]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter" && suggestions.length > 0) {
-      // Use first suggestion safely
-      addTag({ id: suggestions[0].id, label: suggestions[0].name });
-      setInput(""); // clear input after adding tag (optional)
+    const val = input.trim();
+
+    if (e.key === "Enter") {
+      if (suggestions.length > 0) {
+        const s = suggestions[0];
+        addTag({ id: s.id, label: s.name, value: s.value });
+        setInput("");
+      } else if (val !== "") {
+        if (/^\d+$/.test(val) || OPERATORS.has(val)) {
+          addTag({ id: val, label: val, value: val });
+          setInput("");
+        }
+      }
+      e.preventDefault();
     }
 
     if (e.key === "Backspace" && input === "") {
       removeLastTag();
+      e.preventDefault();
     }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+
+    if (
+      val.length === 1 &&
+      (OPERATORS.has(val) || /^\d$/.test(val)) &&
+      input === ""
+    ) {
+      addTag({ id: val, label: val, value: val });
+      setInput("");
+      return;
+    }
+
+    setInput(val);
   };
 
   const removeTagById = (id: string) => {
@@ -67,12 +127,14 @@ export const FormulaInput = () => {
             <input
               ref={inputRef}
               value={input}
-              onChange={(e) => setInput(e.target.value)}
+              onChange={handleInputChange}
               onKeyDown={handleKeyDown}
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
               className="flex-1 min-w-[100px] border-none bg-transparent placeholder-gray-400 focus:outline-none"
               placeholder="Enter formula..."
+              spellCheck={false}
+              autoComplete="off"
             />
           </div>
         </div>
@@ -84,7 +146,7 @@ export const FormulaInput = () => {
             <li
               key={item.id}
               className="px-3 py-2 hover:bg-gray-100 cursor-pointer flex gap-2 items-start"
-              onClick={() => addTag({ id: item.id, label: item.name })}
+              onClick={() => addTag({ id: item.id, label: item.name, value: item.value })}
             >
               <LuSquareFunction className="mt-1 text-blue-500" />
               <div>
@@ -97,6 +159,10 @@ export const FormulaInput = () => {
           ))}
         </ul>
       )}
+
+      <div className="mt-3 font-semibold text-lg text-right">
+        Result: {result}
+      </div>
     </div>
   );
 };
