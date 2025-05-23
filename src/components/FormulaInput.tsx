@@ -41,16 +41,6 @@ export const FormulaInput = () => {
   const [isFocused, setIsFocused] = useState(false);
   const [result, setResult] = useState<string | number>("");
 
-  const buildExpression = () => {
-    console.log(tags)
-    let expr = "";
-    tags.forEach((tag) => {
-      expr += tag.value !== "" && tag.value !== undefined ? tag.value : "0";
-    });
-    expr += input;
-    return expr;
-  };
-
   useEffect(() => {
     console.log(tags)
     const expr = tags
