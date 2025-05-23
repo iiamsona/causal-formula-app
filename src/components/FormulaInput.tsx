@@ -1,8 +1,10 @@
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { useFormulaStore } from "../store/useFormulaStore";
 import { useAutocomplete } from "../hooks/useAutocomplete";
 import { useRef, useState, useEffect } from "react";
 import { Tag } from "./Tag";
 import { LuSquareFunction } from "react-icons/lu";
+import { nanoid } from "nanoid";
 
 type SuggestionItem = {
   id: string;
@@ -42,7 +44,7 @@ export const FormulaInput = () => {
   const [result, setResult] = useState<string | number>("");
 
   useEffect(() => {
-    console.log(tags)
+    // Build expression from tags + input
     const expr = tags
       .map((tag) => (tag.value !== "" && tag.value !== undefined ? tag.value : 0))
       .join("") + input;
@@ -67,8 +69,13 @@ export const FormulaInput = () => {
         addTag({ id: s.id, label: s.name, value: s.value });
         setInput("");
       } else if (val !== "") {
+        // If val is a single operator or digit, add as tag normally
         if (/^\d+$/.test(val) || OPERATORS.has(val)) {
           addTag({ id: val, label: val, value: val });
+          setInput("");
+        } else {
+          // Otherwise, add the whole input as one tag with unique id
+          addTag({ id: nanoid(), label: val, value: val });
           setInput("");
         }
       }

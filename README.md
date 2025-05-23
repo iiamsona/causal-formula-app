@@ -93,5 +93,5 @@ I managed local state using Zustand and API state with React Query. The focus wa
 ## 🔗 Live Demo
 
 Check out the hosted version here:
-[https://causal-formula-app-6sh7-git-main-iiamsonas-projects.vercel.app](https://causal-formula-app-6sh7-git-main-iiamsonas-projects.vercel.app)
+[https://causal-formula-app-g8x5.vercel.app/](https://causal-formula-app-g8x5.vercel.app/)
 
