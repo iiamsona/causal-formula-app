@@ -1,4 +1,4 @@
-# 🧮 causal-formula-app
+# 🧮 Causal formula app
 
 A lightweight React application that allows users to perform mathematical operations with dynamic tokens — similar to the behavior of Causal. The app supports autocomplete suggestions and evaluates expressions using token values, powered by [mathjs](https://mathjs.org/).
 
