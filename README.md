@@ -1,28 +1,25 @@
-Got it! Here’s the full README.md content formatted and ready to use as a Markdown file:
-
-````markdown
 # 🧮 causal-formula-app
 
 A lightweight React application that allows users to perform mathematical operations with dynamic tokens — similar to the behavior of Causal. The app supports autocomplete suggestions and evaluates expressions using token values, powered by [mathjs](https://mathjs.org/).
 
 ## ✨ Features
 
-- Dynamic autocomplete for tokens via API  
-- Real-time evaluation of mathematical formulas  
-- Token-based expression building  
-- Type-safe React with Zustand state management  
-- Beautifully styled with Tailwind CSS  
+* Dynamic autocomplete for tokens via API
+* Real-time evaluation of mathematical formulas
+* Token-based expression building
+* Type-safe React with Zustand state management
+* Beautifully styled with Tailwind CSS
 
 ## 🔧 Tech Stack
 
-- **React 19**  
-- **TypeScript**  
-- **Vite**  
-- **Tailwind CSS**  
-- **Zustand** (for state management)  
-- **mathjs** (for expression evaluation)  
-- **React Query** (for fetching autocomplete data)  
-- **Radix UI** (for dropdown and popover components)  
+* **React 19**
+* **TypeScript**
+* **Vite**
+* **Tailwind CSS**
+* **Zustand** (for state management)
+* **mathjs** (for expression evaluation)
+* **React Query** (for fetching autocomplete data)
+* **Radix UI** (for dropdown and popover components)
 
 ## 📦 Installation
 
@@ -32,7 +29,7 @@ Clone the repository and install dependencies:
 git clone https://github.com/your-username/causal-formula-app.git
 cd causal-formula-app
 npm install
-````
+```
 
 Then start the development server:
 
