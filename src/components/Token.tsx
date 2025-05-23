@@ -1,6 +1,11 @@
-import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 
-export const Token = ({ token }: { token: { id: string; label: string } }) => {
+type TokenProps = {
+  token: { id: string; label: string };
+  onDelete: (id: string) => void;
+};
+
+export const Token = ({ token, onDelete }: TokenProps) => {
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger asChild>
@@ -8,11 +13,15 @@ export const Token = ({ token }: { token: { id: string; label: string } }) => {
           {token.label}
         </div>
       </DropdownMenu.Trigger>
+
       <DropdownMenu.Content className="bg-white border shadow-md rounded p-2">
-        <DropdownMenu.Item>Option 1</DropdownMenu.Item>
-        <DropdownMenu.Item>Option 2</DropdownMenu.Item>
-        <DropdownMenu.Item>Delete</DropdownMenu.Item>
+        <DropdownMenu.Item
+          onSelect={() => onDelete(token.id)}
+          className="cursor-pointer select-none px-2 py-1 rounded hover:bg-red-100 text-red-600"
+        >
+          Delete
+        </DropdownMenu.Item>
       </DropdownMenu.Content>
     </DropdownMenu.Root>
-  )
-}
+  );
+};
