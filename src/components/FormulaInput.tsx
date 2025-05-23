@@ -1,8 +1,24 @@
-import { useFormulaStore } from "@/store/useFormulaStore.ts";
-import { useAutocomplete } from "@/hooks/useAutocomplete.ts";
+import { useFormulaStore } from "../store/useFormulaStore";
+import { useAutocomplete } from "../hooks/useAutocomplete";
 import { useRef, useState } from "react";
-import { Tag } from "./Tag";  // Rename your Token component/file to Tag accordingly
+import { Tag } from "../components/Tag.tsx";
 import { LuSquareFunction } from "react-icons/lu";
+
+type SuggestionItem = {
+  id: string;
+  name: string;
+  category: string;
+};
+
+type TagItem = {
+  id: string;
+  label: string;
+};
+
+// Type guard to check if item is SuggestionItem (has category)
+function isSuggestionItem(item: any): item is SuggestionItem {
+  return typeof item.category === "string";
+}
 
 export const FormulaInput = () => {
   const {
@@ -21,7 +37,9 @@ export const FormulaInput = () => {
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && suggestions.length > 0) {
+      // Use first suggestion safely
       addTag({ id: suggestions[0].id, label: suggestions[0].name });
+      setInput(""); // clear input after adding tag (optional)
     }
 
     if (e.key === "Backspace" && input === "") {
@@ -43,7 +61,7 @@ export const FormulaInput = () => {
             </span>
           )}
           <div className={`flex flex-wrap items-center gap-2 w-full ${isFocused ? "pl-4" : ""}`}>
-            {tags.map((tag) => (
+            {tags.map((tag: TagItem) => (
               <Tag key={tag.id} tag={tag} onDelete={removeTagById} />
             ))}
             <input
@@ -59,9 +77,10 @@ export const FormulaInput = () => {
           </div>
         </div>
       </div>
+
       {input && suggestions.length > 0 && (
         <ul className="absolute z-50 mt-2 w-full max-w-[300px] bg-white border rounded-lg shadow-lg overflow-y-auto max-h-60 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
-          {suggestions.map((item: any) => (
+          {suggestions.map((item) => (
             <li
               key={item.id}
               className="px-3 py-2 hover:bg-gray-100 cursor-pointer flex gap-2 items-start"
@@ -70,7 +89,9 @@ export const FormulaInput = () => {
               <LuSquareFunction className="mt-1 text-blue-500" />
               <div>
                 <div className="font-medium">{item.name}</div>
-                <div className="text-sm text-gray-500">{item.category}</div>
+                {isSuggestionItem(item) && (
+                  <div className="text-sm text-gray-500">{item.category}</div>
+                )}
               </div>
             </li>
           ))}

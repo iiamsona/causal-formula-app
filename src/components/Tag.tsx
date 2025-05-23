@@ -1,6 +1,6 @@
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 
-type TagProps = {
+export type TagProps = {
   tag: { id: string; label: string };
   onDelete: (id: string) => void;
 };
