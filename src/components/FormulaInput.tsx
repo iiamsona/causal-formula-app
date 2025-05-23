@@ -5,8 +5,15 @@ import { Token } from "./Token";
 import { LuSquareFunction } from "react-icons/lu";
 
 export const FormulaInput = () => {
-  const { tokens, input, setInput, addToken, removeLastToken, removeToken } =
-    useFormulaStore();
+  const {
+    tokens,
+    input,
+    setInput,
+    addToken,
+    removeLastToken,
+    removeToken, // ✅ Fix: include removeToken
+  } = useFormulaStore();
+
   const { data: suggestions = [] } = useAutocomplete(input);
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -29,32 +36,34 @@ export const FormulaInput = () => {
   return (
     <div className="relative w-full">
       <div className="flex flex-wrap items-center gap-2 border rounded-lg px-3 py-2 shadow-sm focus-within:ring-2 focus-within:ring-blue-500">
-        {tokens.map((token) => (
-          <Token key={token.id} token={token} onDelete={removeTokenById}/>
-        ))}
-
-        {/* Input wrapper relative for prefix */}
-        <div className="relative flex-1 min-w-[100px]">
+        {/* = sign and tokens after it */}
+        <div className="relative flex flex-wrap items-center gap-2 flex-1 min-w-[100px]">
           {isFocused && (
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 select-none pointer-events-none">
+            <span className="absolute left-0 top-1/2 -translate-y-1/2 text-gray-500 select-none pointer-events-none">
               =
             </span>
           )}
-          <input
-            ref={inputRef}
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={handleKeyDown}
-            onFocus={() => setIsFocused(true)}
-            onBlur={() => setIsFocused(false)}
-            className={`w-full border-none bg-transparent placeholder-gray-400 focus:outline-none ${
-              isFocused ? "pl-6" : "pl-2"
-            }`}
-            placeholder="Enter formula..."
-          />
+
+          {/* Tokens and Input */}
+          <div className={`flex flex-wrap items-center gap-2 w-full ${isFocused ? "pl-4" : ""}`}>
+            {tokens.map((token) => (
+              <Token key={token.id} token={token} onDelete={removeTokenById} />
+            ))}
+            <input
+              ref={inputRef}
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={handleKeyDown}
+              onFocus={() => setIsFocused(true)}
+              onBlur={() => setIsFocused(false)}
+              className="flex-1 min-w-[100px] border-none bg-transparent placeholder-gray-400 focus:outline-none"
+              placeholder="Enter formula..."
+            />
+          </div>
         </div>
       </div>
 
+      {/* Suggestions dropdown */}
       {input && suggestions.length > 0 && (
         <ul className="absolute z-50 mt-2 w-full max-w-[300px] bg-white border rounded-lg shadow-lg overflow-y-auto max-h-60 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
           {suggestions.map((item: any) => (
