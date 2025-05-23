@@ -1,32 +1,34 @@
 import { create } from 'zustand'
 
-type Token = { id: string; label: string };
+type Tag = { id: string; label: string }
 
 interface FormulaState {
-  tokens: Token[];
-  input: string;
-  setInput: (val: string) => void;
-  addToken: (token: Token) => void;
-  removeLastToken: () => void;
-  removeToken: (id: string) => void; 
+  tags: Tag[]
+  input: string
+  setInput: (val: string) => void
+  addTag: (tag: Tag) => void
+  removeLastTag: () => void
+  removeTag: (id: string) => void
 }
 
 export const useFormulaStore = create<FormulaState>((set) => ({
-  tokens: [],
+  tags: [],
   input: '',
   setInput: (val) => set({ input: val }),
-  addToken: (token) =>
+  
+  addTag: (tag) =>
     set((state) => ({
-      tokens: [...state.tokens, token],
+      tags: [...state.tags, tag],
       input: '',
     })),
-  removeLastToken: () =>
+  
+  removeLastTag: () =>
     set((state) => ({
-      tokens: state.tokens.slice(0, -1),
+      tags: state.tags.slice(0, -1),
     })),
-  removeToken: (id: string) => {
+  
+  removeTag: (id: string) =>
     set((state) => ({
-      tokens: state.tokens.filter((token) => token.id !== id),
-    }));
-  },
-}));
+      tags: state.tags.filter((tag) => tag.id !== id),
+    })),
+}))

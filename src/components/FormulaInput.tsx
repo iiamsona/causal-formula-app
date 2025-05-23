@@ -1,17 +1,17 @@
 import { useFormulaStore } from "@/store/useFormulaStore.ts";
 import { useAutocomplete } from "@/hooks/useAutocomplete.ts";
 import { useRef, useState } from "react";
-import { Token } from "./Token";
+import { Tag } from "./Tag";  // Rename your Token component/file to Tag accordingly
 import { LuSquareFunction } from "react-icons/lu";
 
 export const FormulaInput = () => {
   const {
-    tokens,
+    tags,
     input,
     setInput,
-    addToken,
-    removeLastToken,
-    removeToken,
+    addTag,
+    removeLastTag,
+    removeTag,
   } = useFormulaStore();
 
   const { data: suggestions = [] } = useAutocomplete(input);
@@ -21,16 +21,16 @@ export const FormulaInput = () => {
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && suggestions.length > 0) {
-      addToken({ id: suggestions[0].id, label: suggestions[0].name });
+      addTag({ id: suggestions[0].id, label: suggestions[0].name });
     }
 
     if (e.key === "Backspace" && input === "") {
-      removeLastToken();
+      removeLastTag();
     }
   };
 
-  const removeTokenById = (id: string) => {
-    removeToken(id);
+  const removeTagById = (id: string) => {
+    removeTag(id);
   };
 
   return (
@@ -43,8 +43,8 @@ export const FormulaInput = () => {
             </span>
           )}
           <div className={`flex flex-wrap items-center gap-2 w-full ${isFocused ? "pl-4" : ""}`}>
-            {tokens.map((token) => (
-              <Token key={token.id} token={token} onDelete={removeTokenById} />
+            {tags.map((tag) => (
+              <Tag key={tag.id} tag={tag} onDelete={removeTagById} />
             ))}
             <input
               ref={inputRef}
@@ -65,7 +65,7 @@ export const FormulaInput = () => {
             <li
               key={item.id}
               className="px-3 py-2 hover:bg-gray-100 cursor-pointer flex gap-2 items-start"
-              onClick={() => addToken({ id: item.id, label: item.name })}
+              onClick={() => addTag({ id: item.id, label: item.name })}
             >
               <LuSquareFunction className="mt-1 text-blue-500" />
               <div>
