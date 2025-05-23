@@ -48,13 +48,6 @@ const res = await fetch('https://652f91320b8d8ddac0b2b62b.mockapi.io/autocomplet
 
 Only matching results based on the tag name are shown as suggestions.
 
-## 🖼️ Screenshots
-
-<p align="center">  
-  <img src="screenshots/autocomplete.png" alt="Autocomplete Demo" width="500" />  
-  <img src="screenshots/evaluation.png" alt="Formula Evaluation Demo" width="500" />  
-</p>
-
 ## 🚀 Scripts
 
 | Script            | Description                   |
