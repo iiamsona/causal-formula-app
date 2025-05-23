@@ -11,7 +11,7 @@ export const FormulaInput = () => {
     setInput,
     addToken,
     removeLastToken,
-    removeToken, // ✅ Fix: include removeToken
+    removeToken,
   } = useFormulaStore();
 
   const { data: suggestions = [] } = useAutocomplete(input);
@@ -36,15 +36,12 @@ export const FormulaInput = () => {
   return (
     <div className="relative w-full">
       <div className="flex flex-wrap items-center gap-2 border rounded-lg px-3 py-2 shadow-sm focus-within:ring-2 focus-within:ring-blue-500">
-        {/* = sign and tokens after it */}
         <div className="relative flex flex-wrap items-center gap-2 flex-1 min-w-[100px]">
           {isFocused && (
             <span className="absolute left-0 top-1/2 -translate-y-1/2 text-gray-500 select-none pointer-events-none">
               =
             </span>
           )}
-
-          {/* Tokens and Input */}
           <div className={`flex flex-wrap items-center gap-2 w-full ${isFocused ? "pl-4" : ""}`}>
             {tokens.map((token) => (
               <Token key={token.id} token={token} onDelete={removeTokenById} />
@@ -62,8 +59,6 @@ export const FormulaInput = () => {
           </div>
         </div>
       </div>
-
-      {/* Suggestions dropdown */}
       {input && suggestions.length > 0 && (
         <ul className="absolute z-50 mt-2 w-full max-w-[300px] bg-white border rounded-lg shadow-lg overflow-y-auto max-h-60 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
           {suggestions.map((item: any) => (

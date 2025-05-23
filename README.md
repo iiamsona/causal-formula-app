@@ -1,54 +1,85 @@
-# React + TypeScript + Vite
+Got it! Here’s the full README.md content formatted and ready to use as a Markdown file:
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+````markdown
+# 🧮 causal-formula-app
 
-Currently, two official plugins are available:
+A lightweight React application that allows users to perform mathematical operations with dynamic tokens — similar to the behavior of Causal. The app supports autocomplete suggestions and evaluates expressions using token values, powered by [mathjs](https://mathjs.org/).
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ✨ Features
 
-## Expanding the ESLint configuration
+- Dynamic autocomplete for tokens via API  
+- Real-time evaluation of mathematical formulas  
+- Token-based expression building  
+- Type-safe React with Zustand state management  
+- Beautifully styled with Tailwind CSS  
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 🔧 Tech Stack
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+- **React 19**  
+- **TypeScript**  
+- **Vite**  
+- **Tailwind CSS**  
+- **Zustand** (for state management)  
+- **mathjs** (for expression evaluation)  
+- **React Query** (for fetching autocomplete data)  
+- **Radix UI** (for dropdown and popover components)  
+
+## 📦 Installation
+
+Clone the repository and install dependencies:
+
+```bash
+git clone https://github.com/your-username/causal-formula-app.git
+cd causal-formula-app
+npm install
+````
+
+Then start the development server:
+
+```bash
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🌐 API Integration
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+The app fetches autocomplete suggestions from a mock API and filters them based on the current query:
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+```ts
+const res = await fetch('https://652f91320b8d8ddac0b2b62b.mockapi.io/autocomplete')
 ```
+
+Only matching results based on the token name are shown as suggestions.
+
+## 🖼️ Screenshots
+
+<!--  screenshots -->  
+
+<p align="center">  
+  <img src="screenshots/autocomplete.png" alt="Autocomplete Demo" width="500" />  
+  <img src="screenshots/evaluation.png" alt="Formula Evaluation Demo" width="500" />  
+</p>
+
+## 🚀 Scripts
+
+| Script            | Description                   |
+| ----------------- | ----------------------------- |
+| `npm run dev`     | Starts the dev server         |
+| `npm run build`   | Builds the app for production |
+| `npm run preview` | Serves the production build   |
+| `npm run lint`    | Lints the code using ESLint   |
+
+## 📁 Folder Structure
+
+```
+src/
+├── components/         # Reusable UI components
+├── hooks/              # Custom React hooks
+├── store/              # Zustand state logic
+├── utils/              # Utility functions
+└── App.tsx             # Main entry component
+```
+
+## 🙋‍♀️ Author
+
+Built by [Sona Hakobyan](https://github.com/iiamsona) 💡
+For inquiries, contact: [sona22hakobyan@gmail.com](mailto:sona22hakobyan@gmail.com)
